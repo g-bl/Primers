@@ -69,9 +69,9 @@ namespace Primers
                     // List all possible shapes,
                     List<ValidShape> shapes = new List<ValidShape>();
 
-                    for (int w = 1; w < maxPiecesInAPart; w++)
+                    for (int w = 1; w <= maxPiecesInAPart; w++)
                     {
-                        for (int h = 1; h < maxPiecesInAPart; h++)
+                        for (int h = 1; h <= maxPiecesInAPart; h++)
                         {
                             if ((w * h) <= maxPiecesInAPart)
                                 shapes.Add(new ValidShape()
@@ -87,17 +87,17 @@ namespace Primers
                     // Searching for slices
                     foreach(ValidShape shape in validShapes)
                     {
-                        for (int squareOriginY = 0; squareOriginY <= (pizzaHeight - shape.height); squareOriginY++)
+                        for (int shapeOriginY = 0; shapeOriginY <= (pizzaHeight - shape.height); shapeOriginY++)
                         {
-                            for (int squareOriginX = 0; squareOriginX <= (pizzaWidth - shape.width); squareOriginX++)
+                            for (int shapeOriginX = 0; shapeOriginX <= (pizzaWidth - shape.width); shapeOriginX++)
                             {
                                 // Take a look at this pizza part
                                 bool squareIsValid = true;
                                 int totalHam = 0;
 
-                                for (int y = squareOriginY; y < (squareOriginY + shape.height); y++)
+                                for (int y = shapeOriginY; y < (shapeOriginY + shape.height); y++)
                                 {
-                                    for (int x = squareOriginX; x < (squareOriginX + shape.width); x++)
+                                    for (int x = shapeOriginX; x < (shapeOriginX + shape.width); x++)
                                     {
                                         // The square must not include a pizza piece already taken.
                                         if (alreadyTakenPizzaPieces[y][x])
@@ -115,9 +115,9 @@ namespace Primers
                                 // If valid, removes the square and updates the operations list
                                 if (squareIsValid && totalHam >= minHamPiecesRequired)
                                 {
-                                    for (int y = squareOriginY; y < (squareOriginY + shape.height); y++)
+                                    for (int y = shapeOriginY; y < (shapeOriginY + shape.height); y++)
                                     {
-                                        for (int x = squareOriginX; x < (squareOriginX + shape.width); x++)
+                                        for (int x = shapeOriginX; x < (shapeOriginX + shape.width); x++)
                                         {
                                             alreadyTakenPizzaPieces[y][x] = true;
                                         }
@@ -125,8 +125,8 @@ namespace Primers
 
                                     pizzaParts.Add(new PizzaPart()
                                     {
-                                        x = squareOriginX,
-                                        y = squareOriginY,
+                                        x = shapeOriginX,
+                                        y = shapeOriginY,
                                         width = shape.width,
                                         height = shape.height
                                     });
