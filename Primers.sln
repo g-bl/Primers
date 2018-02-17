@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttrapezLesTous", "AlgoPokemon\AttrapezLesTous.csproj", "{EC0F91E5-9133-49C4-9F17-ADCD3C7592AE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtOptimal", "ArtOptimal\ArtOptimal.csproj", "{2BDBE633-1AFC-43EE-9C4E-6FDDB5FB3B3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaGoogle", "PizzaGoogle\PizzaGoogle.csproj", "{D6CB5D7D-537D-4DC1-AEBD-10678689F3AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttrapezLesTous", "AttrapezLesTous\AttrapezLesTous.csproj", "{EC0F91E5-9133-49C4-9F17-ADCD3C7592AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EC0F91E5-9133-49C4-9F17-ADCD3C7592AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC0F91E5-9133-49C4-9F17-ADCD3C7592AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC0F91E5-9133-49C4-9F17-ADCD3C7592AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC0F91E5-9133-49C4-9F17-ADCD3C7592AE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2BDBE633-1AFC-43EE-9C4E-6FDDB5FB3B3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2BDBE633-1AFC-43EE-9C4E-6FDDB5FB3B3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BDBE633-1AFC-43EE-9C4E-6FDDB5FB3B3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BDBE633-1AFC-43EE-9C4E-6FDDB5FB3B3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6CB5D7D-537D-4DC1-AEBD-10678689F3AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6CB5D7D-537D-4DC1-AEBD-10678689F3AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6CB5D7D-537D-4DC1-AEBD-10678689F3AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6CB5D7D-537D-4DC1-AEBD-10678689F3AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC0F91E5-9133-49C4-9F17-ADCD3C7592AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC0F91E5-9133-49C4-9F17-ADCD3C7592AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC0F91E5-9133-49C4-9F17-ADCD3C7592AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC0F91E5-9133-49C4-9F17-ADCD3C7592AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
