@@ -8,4 +8,4 @@ http://primers.xyz/
 |---|---|---|
 |ArtOptimal|6861|2896|
 |AttrapezLesTous|104|105|
-|PizzaGoogle|3|10249|
+|PizzaGoogle|8089|10249|
