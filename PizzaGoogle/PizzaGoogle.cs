@@ -22,6 +22,7 @@ namespace Primers
             {
                 // INPUT LOADING
                 bool[][] pizza; // true if ham
+                bool[][] alreadyTakenPizzaPieces;
 
                 int pizzaWidth = -1;
                 int pizzaHeight = -1;
@@ -34,7 +35,7 @@ namespace Primers
                 {
                     string[] splittedLine = lines[0].Split(delimiter);
 
-                    if (splittedLine.Length < 1
+                    if (splittedLine.Length < 4
                         || !int.TryParse(splittedLine[0], out pizzaWidth)
                         || !int.TryParse(splittedLine[1], out pizzaHeight)
                         || !int.TryParse(splittedLine[2], out minHamPiecesRequired)
@@ -45,43 +46,93 @@ namespace Primers
                     }
 
                     pizza = new bool[pizzaHeight][];
+                    alreadyTakenPizzaPieces = new bool[pizzaHeight][];
 
                     for (int i = 0; i < pizzaHeight; i++)
                     {
                         pizza[i] = new bool[pizzaWidth];
+                        alreadyTakenPizzaPieces[i] = new bool[pizzaWidth];
                         char[] charsOnTheLine = lines[i + 1].ToCharArray();
 
                         for (int j = 0; j < pizzaWidth; j++)
                         {
                             pizza[i][j] = (charsOnTheLine[j].Equals(ham));
+                            alreadyTakenPizzaPieces[i][j] = false;
                         }
                     }
 
                     // SOLVING
-                    // Worst solver ever: first 3 ham pieces aligned will do the job
+                    // Searching for slices with (dynamic) size (biggest possible) and at least the required number of ham pieces
 
                     List<PizzaPart> pizzaParts = new List<PizzaPart>();
-                    bool terminated = false;
 
-                    for (int y = 0; y < pizzaHeight - 3; y++)
+                    // List all possible shapes,
+                    List<ValidShape> shapes = new List<ValidShape>();
+
+                    for (int w = 1; w < maxPiecesInAPart; w++)
                     {
-                        for (int x = 0; x < pizzaWidth - 3; x++)
+                        for (int h = 1; h < maxPiecesInAPart; h++)
                         {
-                            if (pizza[y][x] && pizza[y][x + 1] && pizza[y][x + 2])
-                            {
-                                pizzaParts.Add(new PizzaPart()
+                            if ((w * h) <= maxPiecesInAPart)
+                                shapes.Add(new ValidShape()
                                 {
-                                    x = x,
-                                    y = y,
-                                    width = 3,
-                                    height = 1
+                                    width = w,
+                                    height = h
                                 });
-                                terminated = true;
-                                break;
+                        }
+                    }
+
+                    IEnumerable<ValidShape> validShapes = shapes.OrderBy(shape => shape.Size()).Reverse(); // and sort them.
+
+                    // Searching for slices
+                    foreach(ValidShape shape in validShapes)
+                    {
+                        for (int squareOriginY = 0; squareOriginY <= (pizzaHeight - shape.height); squareOriginY++)
+                        {
+                            for (int squareOriginX = 0; squareOriginX <= (pizzaWidth - shape.width); squareOriginX++)
+                            {
+                                // Take a look at this pizza part
+                                bool squareIsValid = true;
+                                int totalHam = 0;
+
+                                for (int y = squareOriginY; y < (squareOriginY + shape.height); y++)
+                                {
+                                    for (int x = squareOriginX; x < (squareOriginX + shape.width); x++)
+                                    {
+                                        // The square must not include a pizza piece already taken.
+                                        if (alreadyTakenPizzaPieces[y][x])
+                                        {
+                                            squareIsValid = false;
+                                            break;
+                                        }
+                                        else if (pizza[y][x])
+                                            totalHam++;
+                                    }
+                                    if (!squareIsValid)
+                                        break;
+                                }
+
+                                // If valid, removes the square and updates the operations list
+                                if (squareIsValid && totalHam >= minHamPiecesRequired)
+                                {
+                                    for (int y = squareOriginY; y < (squareOriginY + shape.height); y++)
+                                    {
+                                        for (int x = squareOriginX; x < (squareOriginX + shape.width); x++)
+                                        {
+                                            alreadyTakenPizzaPieces[y][x] = true;
+                                        }
+                                    }
+
+                                    pizzaParts.Add(new PizzaPart()
+                                    {
+                                        x = squareOriginX,
+                                        y = squareOriginY,
+                                        width = shape.width,
+                                        height = shape.height
+                                    });
+                                }
                             }
                         }
-                        if (terminated)
-                            break;
                     }
 
                     // OUTPUT
@@ -94,6 +145,8 @@ namespace Primers
                             outputFile.WriteLine(part.ToString());
                         }
                     }
+
+                    System.Diagnostics.Debug.WriteLine("#parts: " + pizzaParts.Count);
                 }
             }
             else
@@ -111,6 +164,17 @@ namespace Primers
         public override string ToString()
         {
             return String.Format("{0},{1},{2},{3}", x, y, width, height);
+        }
+    }
+
+    class ValidShape
+    {
+        public int width;
+        public int height;
+
+        public int Size() // number of pieces
+        {
+            return (width * height);
         }
     }
 }
