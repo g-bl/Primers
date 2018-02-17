@@ -21,11 +21,14 @@ namespace Primers
             {
                 // INPUT LOADING
                 List<Cell> cells = new List<Cell>();
+                double timeLeft = -1;
 
                 string[] lines = File.ReadAllLines(inputFilePath);
 
                 if (lines.Length > 1)
                 {
+                    Double.TryParse(lines[0], out timeLeft);
+
                     for (int i = 1; i < lines.Length; i++)
                     {
                         string[] splittedLine = lines[i].Split(delimiter);
@@ -44,11 +47,28 @@ namespace Primers
                     }
 
                     // SOLVING
-                    // Worst solver: eat some cells by id ASC
+                    // From the nearest to the nearest
 
                     List<Cell> eatenCells = new List<Cell>();
-                    
-                    eatenCells.AddRange(cells.Take(10));
+
+                    Cell me = new Cell()
+                    {
+                        x = 0,
+                        y = 0
+                    };
+
+                    while (timeLeft > 0)
+                    {
+                        Cell nextVictim = cells.Aggregate((c1, c2) => (Distance(me, c1) < Distance(me, c2)) ? c1 : c2);
+
+                        eatenCells.Add(nextVictim);
+                        cells.Remove(nextVictim);
+
+                        timeLeft -= Distance(me, nextVictim);
+
+                        me = nextVictim;
+                    }
+                    eatenCells.Remove(eatenCells.Last());
 
                     // OUTPUT
                     System.Diagnostics.Debug.WriteLine("GET READY!");
@@ -64,6 +84,11 @@ namespace Primers
             }
             else
                 System.Diagnostics.Debug.WriteLine("Error: missing file.");
+        }
+
+        public static double Distance(Cell origin, Cell cell)
+        {
+            return Math.Sqrt(Math.Pow(cell.x - origin.x, 2) + Math.Pow(cell.y - origin.y, 2));
         }
     }
     
