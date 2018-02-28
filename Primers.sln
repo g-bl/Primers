@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtOptimal", "ArtOptimal\ArtOptimal.csproj", "{2BDBE633-1AFC-43EE-9C4E-6FDDB5FB3B3F}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttrapezLesTous", "AttrapezLesTous\AttrapezLesTous.csproj", "{EC0F91E5-9133-49C4-9F17-ADCD3C7592AE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agar.IA", "Agar.IA\Agar.IA.csproj", "{4FA4015A-8F68-466C-902E-410FEB21800D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Illumination", "Illumination\Illumination.csproj", "{EE40CA7C-40A9-4947-A73A-C7FFCF37075E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,8 +35,15 @@ Global
 		{4FA4015A-8F68-466C-902E-410FEB21800D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FA4015A-8F68-466C-902E-410FEB21800D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FA4015A-8F68-466C-902E-410FEB21800D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE40CA7C-40A9-4947-A73A-C7FFCF37075E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE40CA7C-40A9-4947-A73A-C7FFCF37075E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE40CA7C-40A9-4947-A73A-C7FFCF37075E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE40CA7C-40A9-4947-A73A-C7FFCF37075E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CEE907E6-0D7F-4EAF-B601-A018DB56FDEA}
 	EndGlobalSection
 EndGlobal
