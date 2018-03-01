@@ -10,8 +10,8 @@ namespace GoogleHashCode
 {
     class SelfDriving
     {
-        private static string inputFileName = "d_metropolis.in"; // a_example b_should_be_easy c_no_hurry d_metropolis e_high_bonus
-        private static string outputFileName = "d_metropolis.out";
+        private static string inputFileName = "e_high_bonus.in"; // a_example b_should_be_easy c_no_hurry d_metropolis e_high_bonus
+        private static string outputFileName = "e_high_bonus.out";
         private static char delimiter = ' ';
 
         static void Main(string[] args)
@@ -84,33 +84,46 @@ namespace GoogleHashCode
 
             for (int t = 0; t < T; t++)
             {
+                int availableVehicles = 0;
+
                 foreach (Vehicle vehicle in fleet)
                 {
                     // Update the vehicle position if the current ride (if any) has ended
-                    if (!vehicle.available && vehicle.assignedRides.Last().PlannedEndTime() == t)
+                    if (!vehicle.available && vehicle.lastRide.PlannedEndTime() == t)
                     {
                         vehicle.available = true;
                         vehicle.position = vehicle.assignedRides.Last().Finish;
                     }
 
                     // Search for a new ride
-                    if (vehicle.available && availableRides.Count > 0)
+                    if (vehicle.available && !vehicle.fired && availableRides.Count > 0)
                     {
+                        availableVehicles++;
+
                         // Find nearest ride
-                        // TODO : consider to seach for the nearest in distance + TIME 
+                        // TODO : consider to seach for the nearest in distance + TIME
                         Ride nearestRide = availableRides.Aggregate((r1, r2) => (Utils.Distance(vehicle.position, r1.Start) < Utils.Distance(vehicle.position, r2.Start)) ? r1 : r2);
 
                         // Don't take the ride if not possible to be on time at finish
-                        if (t <= (nearestRide.LastestStart() + Utils.Distance(vehicle.position, nearestRide.Start)))
+                        int tempDistance = Utils.Distance(vehicle.position, nearestRide.Start);
+                        if (t + tempDistance <= nearestRide.LastestStart())
                         {
                             // Asign vehicle to this ride
-                            nearestRide.startTime = t;
+                            nearestRide.startTime = t + tempDistance;
                             vehicle.assignedRides.Add(nearestRide);
+                            vehicle.lastRide = nearestRide;
                             vehicle.available = false;
                             availableRides.Remove(nearestRide);
                         }
+                        else
+                        {
+                            // Fired!
+                            vehicle.fired = true;
+                        }
                     }
                 }
+
+                Console.WriteLine("t: " + t + " availableRides:" + availableRides.Count + " availableVehicles:"+ availableVehicles);
             }
 
             /**************************************************************************************
@@ -159,17 +172,23 @@ namespace GoogleHashCode
             return latestFinish - Utils.Distance(Start, Finish);
         }
         public int startTime;
+        private int plannedEndTime = -1;
         public int PlannedEndTime()
         {
-            return startTime + Utils.Distance(Start, Finish);
+            if (plannedEndTime < 0) {
+                plannedEndTime = startTime + Utils.Distance(Start, Finish);
+            }
+            return plannedEndTime;
         }
     }
 
     class Vehicle
     {
         public bool available;
+        public bool fired;
         public Intersection position;
         public List<Ride> assignedRides;
+        public Ride lastRide;
 
         public override string ToString()
         {
