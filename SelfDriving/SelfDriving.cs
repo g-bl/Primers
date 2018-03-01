@@ -102,21 +102,67 @@ namespace GoogleHashCode
 
                         // Find nearest ride
                         // TODO : consider to seach for the nearest in distance + TIME
-                        Ride nearestRide = availableRides.Aggregate((r1, r2) => (Utils.Distance(vehicle.position, r1.Start) < Utils.Distance(vehicle.position, r2.Start)) ? r1 : r2);
+                        ///Ride nearestRide = availableRides.Aggregate((r1, r2) => (Utils.Distance(vehicle.position, r1.Start) < Utils.Distance(vehicle.position, r2.Start)) ? r1 : r2);
 
-                        // Don't take the ride if not possible to be on time at finish
-                        int tempDistance = Utils.Distance(vehicle.position, nearestRide.Start);
-                        if (t + tempDistance <= nearestRide.LastestStart())
+                        //availableRides.Sort((r1, r2) =>
+                        //{
+                        //    if (r1 != null && r2 != null)
+                        //    {
+                        //        // Sort from the nearest ride to the farest
+                        //        int dist1 = Utils.Distance(vehicle.position, r1.Start);
+                        //        int dist2 = Utils.Distance(vehicle.position, r2.Start);
+
+                        //        return (dist1 < dist2 ? -1 : +1);
+                        //    }
+
+                        //    if (r1 == null && r2 == null)
+                        //        return 0;
+
+                        //    if (r1 != null)
+                        //        return -1;
+
+                        //    return 1;
+                        //});
+
+                        availableRides.Sort((r1, r2) =>
                         {
-                            // Asign vehicle to this ride
-                            nearestRide.startTime = t + tempDistance;
-                            vehicle.assignedRides.Add(nearestRide);
-                            vehicle.lastRide = nearestRide;
-                            vehicle.available = false;
-                            availableRides.Remove(nearestRide);
+                            if (r1 != null && r2 != null)
+                            {
+                                // Sort from the biggest distance to the smallest
+                                int dist1 = Utils.Distance(r1.Start,r1.Finish);
+                                int dist2 = Utils.Distance(r2.Start,r2.Finish);
+
+                                return (dist1 < dist2 ? +1 : -1);
+                            }
+
+                            if (r1 == null && r2 == null)
+                                return 0;
+
+                            if (r1 != null)
+                                return -1;
+
+                            return 1;
+                        });
+
+                        foreach (Ride nearestRide in availableRides) {
+
+                            // Don't take the ride if not possible to be on time at finish
+                            int tempDistance = Utils.Distance(vehicle.position, nearestRide.Start);
+                            if (t + tempDistance <= nearestRide.LastestStart())
+                            {
+                                // Asign vehicle to this ride
+                                nearestRide.startTime = t + tempDistance;
+
+                                vehicle.assignedRides.Add(nearestRide);
+                                vehicle.lastRide = nearestRide;
+                                vehicle.available = false;
+                                availableRides.Remove(nearestRide);
+
+                                break;
+                            }
                         }
-                        else
-                        {
+
+                        if (vehicle.available) {
                             // Fired!
                             vehicle.fired = true;
                         }
