@@ -10,8 +10,8 @@ namespace GoogleHashCode
 {
     class SelfDriving
     {
-        private static string inputFileName = "a_example.in"; // a_example b_should_be_easy c_no_hurry d_metropolis e_high_bonus
-        private static string outputFileName = "a_example.out";
+        private static string inputFileName = "d_metropolis.in"; // a_example b_should_be_easy c_no_hurry d_metropolis e_high_bonus
+        private static string outputFileName = "d_metropolis.out";
         private static char delimiter = ' ';
 
         static void Main(string[] args)
@@ -34,7 +34,7 @@ namespace GoogleHashCode
             int B = int.Parse(firstLine[4]); // per-ride bonus
             int T = int.Parse(firstLine[5]); // number of steps
 
-            List<Ride> rides = new List<Ride>();
+            List<Ride> availableRides = new List<Ride>();
 
             for (int i = 1; i < lines.Length; i++)
             {
@@ -54,9 +54,10 @@ namespace GoogleHashCode
                         c = int.Parse(splittedLine[3])
                     },
                     earliestStart = int.Parse(splittedLine[4]),
-                    latestFinish = int.Parse(splittedLine[5])
+                    latestFinish = int.Parse(splittedLine[5]),
+                    startTime = -1
                 };
-                rides.Add(ride);
+                availableRides.Add(ride);
             }
 
             List<Vehicle> fleet = new List<Vehicle>();
@@ -83,7 +84,33 @@ namespace GoogleHashCode
 
             for (int t = 0; t < T; t++)
             {
-                
+                foreach (Vehicle vehicle in fleet)
+                {
+                    // Update the vehicle position if the current ride (if any) has ended
+                    if (!vehicle.available && vehicle.assignedRides.Last().PlannedEndTime() == t)
+                    {
+                        vehicle.available = true;
+                        vehicle.position = vehicle.assignedRides.Last().Finish;
+                    }
+
+                    // Search for a new ride
+                    if (vehicle.available && availableRides.Count > 0)
+                    {
+                        // Find nearest ride
+                        // TODO : consider to seach for the nearest in distance + TIME 
+                        Ride nearestRide = availableRides.Aggregate((r1, r2) => (Utils.Distance(vehicle.position, r1.Start) < Utils.Distance(vehicle.position, r2.Start)) ? r1 : r2);
+
+                        // Don't take the ride if not possible to be on time at finish
+                        if (t <= (nearestRide.LastestStart() + Utils.Distance(vehicle.position, nearestRide.Start)))
+                        {
+                            // Asign vehicle to this ride
+                            nearestRide.startTime = t;
+                            vehicle.assignedRides.Add(nearestRide);
+                            vehicle.available = false;
+                            availableRides.Remove(nearestRide);
+                        }
+                    }
+                }
             }
 
             /**************************************************************************************
@@ -103,7 +130,12 @@ namespace GoogleHashCode
             Debug.WriteLine("Done.");
         }
 
-        static int Distance(Intersection a, Intersection b)
+
+    }
+
+    class Utils
+    {
+        public static int Distance(Intersection a, Intersection b)
         {
             return Math.Abs(b.r - a.r) + Math.Abs(b.c - a.c);
         }
@@ -124,7 +156,12 @@ namespace GoogleHashCode
         public int latestFinish;
         public int LastestStart()
         {
-            return latestFinish - (Math.Abs(Finish.r - Start.r) + Math.Abs(Finish.c - Start.c));
+            return latestFinish - Utils.Distance(Start, Finish);
+        }
+        public int startTime;
+        public int PlannedEndTime()
+        {
+            return startTime + Utils.Distance(Start, Finish);
         }
     }
 
@@ -142,7 +179,7 @@ namespace GoogleHashCode
                 assignedRidesOutput = String.Join(" ", assignedRidesOutput, ride.id.ToString());
             }
 
-            return assignedRides.Count.ToString() + " " + assignedRidesOutput;
+            return assignedRides.Count.ToString() + assignedRidesOutput;
         }
     }
 }
