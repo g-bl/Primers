@@ -9,10 +9,11 @@ namespace Primers
 {
     class PizzaGoogle
     {
-        private static string inputFileName = "input_7.txt"; // http://primers.xyz/7
-        private static string outputFileName = "output.txt";
-        private static char delimiter = ',';
-        private static char ham = 'H';
+        // example small medium big
+        private static string inputFileName = "big.in";
+        private static string outputFileName = "big.out";
+        private static char delimiter = ' ';
+        private static char ham = 'M';
 
         static void Main(string[] args)
         {
@@ -36,8 +37,8 @@ namespace Primers
                     string[] splittedLine = lines[0].Split(delimiter);
 
                     if (splittedLine.Length < 4
-                        || !int.TryParse(splittedLine[0], out pizzaWidth)
-                        || !int.TryParse(splittedLine[1], out pizzaHeight)
+                        || !int.TryParse(splittedLine[0], out pizzaHeight)
+                        || !int.TryParse(splittedLine[1], out pizzaWidth)
                         || !int.TryParse(splittedLine[2], out minHamPiecesRequired)
                         || !int.TryParse(splittedLine[3], out maxPiecesInAPart))
                     {
@@ -140,6 +141,7 @@ namespace Primers
 
                     using (StreamWriter outputFile = new StreamWriter(Path.Combine(Directory.GetCurrentDirectory(), outputFileName)))
                     {
+                        outputFile.WriteLine(pizzaParts.Count);
                         foreach (PizzaPart part in pizzaParts)
                         {
                             outputFile.WriteLine(part.ToString());
@@ -163,7 +165,7 @@ namespace Primers
 
         public override string ToString()
         {
-            return String.Format("{0},{1},{2},{3}", x, y, width, height);
+            return String.Format("{0} {1} {2} {3}", y, x, y + height - 1, x + width - 1);
         }
     }
 

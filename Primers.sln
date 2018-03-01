@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agar.IA", "Agar.IA\Agar.IA.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Illumination", "Illumination\Illumination.csproj", "{EE40CA7C-40A9-4947-A73A-C7FFCF37075E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfDriving", "SelfDriving\SelfDriving.csproj", "{0CEA0795-8A76-4C29-B475-0F587957FAFF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{EE40CA7C-40A9-4947-A73A-C7FFCF37075E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE40CA7C-40A9-4947-A73A-C7FFCF37075E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE40CA7C-40A9-4947-A73A-C7FFCF37075E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CEA0795-8A76-4C29-B475-0F587957FAFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CEA0795-8A76-4C29-B475-0F587957FAFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CEA0795-8A76-4C29-B475-0F587957FAFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CEA0795-8A76-4C29-B475-0F587957FAFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
